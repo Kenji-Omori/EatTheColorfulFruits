@@ -38,24 +38,12 @@
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\StringUtility.cpp">
       <Filter>KamataEngine\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\KamataEngine\DirectXGame\math\Vector2.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Circle.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Ball.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="BallManager.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
+    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="BallManager.cpp" />
+    <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -121,10 +109,6 @@
     <ClInclude Include="C:\KamataEngine\DirectXGame\3d\SpotLight.h">
       <Filter>KamataEngine\Include</Filter>
     </ClInclude>
-    <ClInclude Include="C:\KamataEngine\DirectXGame\math\Matrix4x4.h" />
-    <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector2.h" />
-    <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector3.h" />
-    <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector4.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h">
       <Filter>KamataEngine\Include</Filter>
@@ -136,5 +120,9 @@
     <ClInclude Include="ScreenInfo.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="BallManager.h" />
+    <ClInclude Include="Matrix4x4.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vector4.h" />
   </ItemGroup>
 </Project>
