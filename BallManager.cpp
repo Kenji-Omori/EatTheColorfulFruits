@@ -1,10 +1,11 @@
 #include "BallManager.h"
 #include <random>
+#include <ScreenInfo.h>
 
-
-BallManager::BallManager(Player* player)
+BallManager::BallManager(Player* player, Camera* camera)
 {
 	player_ = player;
+	camera_ = camera;
 	for (int i = 0; i < maxBallNum; i++)
 	{
 		SpawnBall(i);
@@ -58,8 +59,8 @@ void BallManager::SpawnBall(int index)
 
 	float radius = float(rand()) / RAND_MAX * 40 + 10.f;
 	Vector2 position = {
-		float(rand()) / RAND_MAX * (1280-radius*2) + radius,
-		float(rand()) / RAND_MAX * (720 -radius*2)+ radius
+		float(rand()) / RAND_MAX * (SCREENINFO_WIDTH * 2) - SCREENINFO_WIDTH /2,
+		float(rand()) / RAND_MAX * (SCREENINFO_HEIGHT *2) - SCREENINFO_HEIGHT/2
 	};
 	Vector2 velocity;
 	velocity.x = float(rand()) / RAND_MAX * 10 - 5.f;
@@ -77,7 +78,7 @@ void BallManager::SpawnBall(int index)
 	//color.SetColorRGB(r, g, b);
 
 	if (balls[index] == nullptr) {
-		balls[index] = new Ball({ position, radius }, velocity, color, 0.05f, player_);
+		balls[index] = new Ball({ position, radius }, velocity, color, 0.05f, player_, camera_);
 	}
 	else
 	{

@@ -12,6 +12,7 @@ struct Vector2 final {
 	float DistanceSqr(Vector2 other);
 	float Distance(Vector2 other);
 	Vector2 operator+(Vector2 other);
+	Vector2 operator+(float other);
 	Vector2 operator-(Vector2 other);
 	Vector2 operator*(float other);
 	Vector2 operator/(float other);

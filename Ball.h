@@ -2,10 +2,11 @@
 #include <Circle.h>
 #include <Player.h>
 #include <Color.h>
+#include <Camera.h>
 class Ball
 {
 public:
-	Ball(Circle circle, Vector2 velocity, Color color, float fliction, Player* player);
+	Ball(Circle circle, Vector2 velocity, Color color, float fliction, Player* player, Camera* camera);
 	~Ball();
 	Circle ToCircke();
 	void Update();
@@ -25,4 +26,5 @@ private:
 	Color color_;
 	float fliction_;
 	Player* player_;
+	Camera* camera_;
 };

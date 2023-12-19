@@ -1,4 +1,4 @@
 #pragma once
 
-static int SCREENINFO_WIDTH = 0;
-static int SCREENINFO_HEIGHT = 0;
+static const int SCREENINFO_WIDTH = 1280;
+static const int SCREENINFO_HEIGHT = 720;

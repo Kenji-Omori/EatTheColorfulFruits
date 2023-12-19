@@ -3,9 +3,10 @@
 #include <ScreenInfo.h>
 #include <math.h>
 
-Ball::Ball(Circle circle, Vector2 velocity, Color color,float fliction, Player* player)
+Ball::Ball(Circle circle, Vector2 velocity, Color color,float fliction, Player* player, Camera* camera)
 {
   player_ = player;
+  camera_ = camera;
   ReSpawn(circle, velocity, color, fliction);
 }
 Ball::~Ball()
@@ -20,7 +21,7 @@ Circle Ball::ToCircke()
 void Ball::Update()
 {
   circle_.position_ = circle_.position_ + velocity_;
-  Reflection();
+  //Reflection();
   AttractToPlayer();
   Fliction();
   HitToPlayer();
@@ -28,7 +29,8 @@ void Ball::Update()
 
 void Ball::Draw()
 {
-  Novice::DrawEllipse(int(circle_.position_.x), int(circle_.position_.y), int(circle_.radius_), int(circle_.radius_), 0, color_.ToCode(), kFillModeSolid);
+  camera_->DrawCircle(circle_, color_);
+//  Novice::DrawEllipse(int(circle_.position_.x), int(circle_.position_.y), int(circle_.radius_), int(circle_.radius_), 0, color_.ToCode(), kFillModeSolid);
 }
 
 bool Ball::GetIsActive()

@@ -38,6 +38,11 @@ Vector2 Vector2::operator+(Vector2 other) {
   return result;
 }
 
+Vector2 Vector2::operator+(float other)
+{
+	return {x + other, y + other};
+}
+
 Vector2 Vector2::operator-(Vector2 other) { 
 	Vector2 result{
 	   x - other.x,
