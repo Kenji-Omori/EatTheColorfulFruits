@@ -3,13 +3,15 @@
 #include <Vector2Int.h>
 #include <random>
 #include <ScreenInfo.h>
-Camera::Camera()
+Camera::Camera(Controller* controller)
 {
   shakeTime_ = 0;
   shakePower_ = 50;
   position_ = Vector2{ 0,0 };
   offset_ = Vector2{ 0,0 };
+  controller_ = controller;
 }
+
 
 Camera::~Camera()
 {
@@ -24,10 +26,10 @@ void Camera::DrawCircle(Circle circle, Color color, bool effectIgnore)
   }
   Vector2Int pos = {
     int(circle.position_.x - position_.x + SCREENINFO_WIDTH/2 + offset.x),
-    int(circle.position_.y - position_.y + SCREENINFO_HEIGHT/2 + offset.y),
+    int(circle.position_.y - position_.y - SCREENINFO_HEIGHT/2 + offset.y),
   };
   int radius = int(circle.radius_);
-  Novice::DrawEllipse(pos.x, pos.y, radius, radius, 0, color.ToCode(), kFillModeSolid);
+  Novice::DrawEllipse(pos.x, -pos.y, radius, radius, 0, color.ToCode(), kFillModeSolid);
 }
 
 

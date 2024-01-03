@@ -6,6 +6,7 @@ BallManager::BallManager(Player* player, Camera* camera)
 {
 	player_ = player;
 	camera_ = camera;
+	CreateBalls();
 	for (int i = 0; i < maxBallNum; i++)
 	{
 		SpawnBall(i);
@@ -53,9 +54,7 @@ void BallManager::SpawnBall()
 
 void BallManager::SpawnBall(int index)
 {
-	if (balls[index] != nullptr) {
-		if (balls[index]->GetIsActive()) { return; }
-	}
+	if (balls[index]->GetIsActive()) { return; }
 
 	float radius = float(rand()) / RAND_MAX * 40 + 10.f;
 	Vector2 position = {
@@ -67,21 +66,18 @@ void BallManager::SpawnBall(int index)
 	velocity.y = float(rand()) / RAND_MAX * 10 - 5.f;
 	Color color;
 	float h = float(rand()) / RAND_MAX * 360;
-	float s = 0.5f;//int(float(rand()) / RAND_MAX * 255);
-	float v = 1.0f;//int(float(rand()) / RAND_MAX * 255);
+	float s = 0.5f;
+	float v = 1.0f;
 
 	color.SetColorHSV(h, s, v);
-	//int r = int(float(rand()) / RAND_MAX * 255);
-	//int g = int(float(rand()) / RAND_MAX * 255);
-	//int b = int(float(rand()) / RAND_MAX * 255);
 
-	//color.SetColorRGB(r, g, b);
+	balls[index]->ReSpawn({ position, radius }, velocity, color, 0.05f);
+}
 
-	if (balls[index] == nullptr) {
-		balls[index] = new Ball({ position, radius }, velocity, color, 0.05f, player_, camera_);
-	}
-	else
+void BallManager::CreateBalls()
+{
+	for (int i = 0; i < maxBallNum; i++)
 	{
-		balls[index]->ReSpawn({ position, radius }, velocity, color, 0.05f);
+		balls[i] = new Ball(player_, camera_);
 	}
 }

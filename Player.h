@@ -2,12 +2,15 @@
 #include <Circle.h>
 #include <Vector2Int.h>
 #include <Color.h>
-#include <Camera.h>
+
+
+class Camera;
+class Controller;
 
 class Player
 {
 public:
-	Player(Vector2* input, Camera* camera);
+	Player(Controller* controller, Camera* camera);
 	~Player();
 
 	Circle ToCircle();
@@ -26,6 +29,6 @@ private:
 	Color color_;
 	Color attractAreaColor_;
 
-	Vector2* input_;
+	Controller* controller_;
 	Camera* camera_;
 };

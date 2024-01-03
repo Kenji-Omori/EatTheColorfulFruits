@@ -3,6 +3,13 @@
 #include <ScreenInfo.h>
 #include <math.h>
 
+Ball::Ball(Player* player, Camera* camera)
+{
+  player_ = player;
+  camera_ = camera;
+  isActive_ =false;
+}
+
 Ball::Ball(Circle circle, Vector2 velocity, Color color,float fliction, Player* player, Camera* camera)
 {
   player_ = player;

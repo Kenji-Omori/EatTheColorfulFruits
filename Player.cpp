@@ -1,7 +1,9 @@
 #include "Player.h"
 #include <Novice.h>
+#include <Controller.h>
+#include <Camera.h>
 
-Player::Player(Vector2* input, Camera* camera)
+Player::Player(Controller* controller, Camera* camera)
 {
   position_ = {};
   radius_ = 30;
@@ -10,7 +12,7 @@ Player::Player(Vector2* input, Camera* camera)
   speed_ = 5;
   color_.SetColorHSV(240,0.5f,0.75f);
   attractAreaColor_.SetColorHSV(108, 0.2f, 1);
-  input_ = input;
+  controller_ = controller;
   camera_ = camera;
 }
 
@@ -52,8 +54,8 @@ void Player::Draw()
 
 void Player::Move()
 {
-  position_.x += input_->x * speed_;
-  position_.y += input_->y * speed_;
+  Vector2 stick = controller_->GetStick(StickCode::Main);
+  position_ = position_ + stick * speed_;
 }
 
 

@@ -6,6 +6,7 @@
 class Ball
 {
 public:
+	Ball(Player* player, Camera* camera);
 	Ball(Circle circle, Vector2 velocity, Color color, float fliction, Player* player, Camera* camera);
 	~Ball();
 	Circle ToCircke();

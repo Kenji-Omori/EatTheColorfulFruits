@@ -12,6 +12,7 @@ public:
 	void Draw();
 	void SpawnBall();
 	void SpawnBall(int index);
+	void CreateBalls();
 private:
 	static const int maxBallNum = 500;
 	Ball* balls[maxBallNum];
