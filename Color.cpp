@@ -1,14 +1,14 @@
 #include "Color.h"
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 Color::Color()
 {
-  SetColorRGB(0, 0, 0, 255);
+  SetColorRGB255(0, 0, 0, 255);
 }
 
 Color::Color(int red, int green, int blue, int alpha)
 {
-  SetColorRGB(red, green, blue, alpha);
+  SetColorRGB255(red, green, blue, alpha);
 }
 
 Color::Color(unsigned int colorCode)
@@ -16,34 +16,95 @@ Color::Color(unsigned int colorCode)
   SetColorByCode(colorCode);
 }
 
+Color::Color(RGB rgb, float alpha)
+{
+  rgb_ = rgb;
+  alpha_ = alpha;
+}
+
+Color::Color(HSV hsv, float alpha)
+{
+  rgb_ = hsv.ToRGB();
+  alpha_ = alpha;
+}
+
 
 unsigned int Color::ToCode()
 {
-  return (red_ << (8 * 3)) + (green_ << (8 * 2)) + (blue_ << (8 * 1)) + alpha_;
+  return rgb_.ToCode(alpha_);
 }
 
 void Color::SetColorByCode(unsigned int colorCode)
 {
-  red_    = (colorCode & 0xff000000) >> (8 * 3);
-  green_  = (colorCode & 0x00ff0000) >> (8 * 2);
-  blue_   = (colorCode & 0x0000ff00) >> (8 * 1);
-  alpha_  = (colorCode & 0x000000ff) >> (8 * 0);
+  int red = (colorCode & 0xff000000) >> (8 * 3);
+  int green = (colorCode & 0x00ff0000) >> (8 * 2);
+  int blue = (colorCode & 0x0000ff00) >> (8 * 1);
+  int alpha = (colorCode & 0x000000ff) >> (8 * 0);
+  SetColorRGB255(red, green, blue, alpha);
 }
 
-void Color::SetColorRGB( int red,  int green,  int blue,  int alpha)
+void Color::SetColorRGB255(int red, int green, int blue, int alpha)
 {
-  red_    = std::clamp(red, 0, 255);
-  green_  = std::clamp(green,0,255);
-  blue_   = std::clamp(blue ,0,255);
-  alpha_  = std::clamp(alpha,0,255);
+  float div = 255;
+  float r = float(std::clamp(red, 0, 255)  ) / div;
+  float g = float(std::clamp(green, 0, 255)) / div;
+  float b = float(std::clamp(blue, 0, 255) ) / div;
+  alpha_ = std::clamp(alpha, 0, 255)/div;
+  rgb_ = {r,g,b};
 }
 
 
-void Color::SetColorHSV(float hue, float saturate, float value)
+void Color::SetColorHSV(float hue, float saturate, float value, float alpha)
 {
-  float h = std::clamp(hue / 360.f,0.f,1.f);
-  float s = std::clamp(saturate,0.f,1.f);
-  float v = std::clamp(value   ,0.f,1.f);
+  HSV hsv = {hue, saturate, value};
+  rgb_ = hsv.ToRGB();
+  alpha_ = alpha;
+  return;
+}
+
+HSV RGB::ToHSV()
+{
+  float max = red > green ? red : green;
+  max = max > blue ? max : blue;
+  float min = red < green ? red : green;
+  min = min < blue ? min : blue;
+  float h = max - min;
+  if (h > 0.0f) {
+    if (max == red) {
+      h = (green - blue) / h;
+      if (h < 0.0f) {
+        h += 6.0f;
+      }
+    } else if (max == green) {
+      h = 2.0f + (blue - red) / h;
+    } else {
+      h = 4.0f + (red - green) / h;
+    }
+  }
+  h /= 6.0f;
+  float s = (max - min);
+  if (max != 0.0f)
+    s /= max;
+  float v = max;
+
+  return {h, s, v};
+}
+
+unsigned int RGB::ToCode(float alp)
+{
+  unsigned int r = unsigned int(red   * 255) << (8 * 3);
+  unsigned int g = unsigned int(green * 255) << (8 * 2);
+  unsigned int b = unsigned int(blue   * 255) << (8 * 1);
+  unsigned int a = unsigned int(alp * 255) << (8 * 0);
+  return r + g + b + a;
+}
+
+RGB HSV::ToRGB()
+{
+  
+  float h = std::clamp(hue / 360.f, 0.f, 1.f);
+  float s = std::clamp(saturate, 0.f, 1.f);
+  float v = std::clamp(value, 0.f, 1.f);
   float r = v;
   float g = v;
   float b = v;
@@ -78,10 +139,12 @@ void Color::SetColorHSV(float hue, float saturate, float value)
       b *= 1 - s * f;
       break;
     }
-    red_ = unsigned int(r * 255);
-    green_ = unsigned int(g * 255);
-    blue_ = unsigned int(b * 255);
+    return {r,g,b};
   }
+  return {0,0,0};
 }
 
-
+unsigned int HSV::ToCode(float a)
+{
+  return ToRGB().ToCode(a);
+}

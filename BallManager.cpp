@@ -2,6 +2,7 @@
 #include <random>
 #include <ScreenInfo.h>
 
+
 BallManager::BallManager(Player* player, Camera* camera)
 {
 	player_ = player;
@@ -9,7 +10,7 @@ BallManager::BallManager(Player* player, Camera* camera)
 	CreateBalls();
 	for (int i = 0; i < maxBallNum; i++)
 	{
-		SpawnBall(i);
+		RespawnBall(i);
 	}
 }
 
@@ -25,41 +26,43 @@ void BallManager::Update()
 {
 	for (int i = 0; i < maxBallNum; i++)
 	{
-		if (!balls[i]->GetIsActive()) { continue; }
+		if (!balls[i]->IsActive()) { continue; }
 		balls[i]->Update();
-
-		SpawnBall();
 	}
+	CheckEatAllBall();
+	RespawnBall();
 }
 
 void BallManager::Draw()
 {
 	for (int i = 0; i < maxBallNum; i++)
 	{
-		if (!balls[i]->GetIsActive()) { continue; }
+		if (!balls[i]->IsActive()) { continue; }
 		balls[i]->Draw();
 	}
 }
 
-void BallManager::SpawnBall()
+void BallManager::RespawnBall()
 {
 	int validIndex = 0;
 	for (validIndex = 0; validIndex < maxBallNum; validIndex++)
 	{
-		if (!balls[validIndex]->GetIsActive()) { break; }
+		if (!balls[validIndex]->IsActive()) { break; }
 	}
 	if (validIndex >= maxBallNum) { return; }
-	SpawnBall(validIndex);
+	RespawnBall(validIndex);
 }
 
-void BallManager::SpawnBall(int index)
+void BallManager::RespawnBall(int index)
 {
-	if (balls[index]->GetIsActive()) { return; }
+	if (balls[index]->IsActive()) { return; }
 
 	float radius = float(rand()) / RAND_MAX * 40 + 10.f;
+	float width  = SCREENINFO_WIDTH * 2;
+	float height = SCREENINFO_HEIGHT * 2;
 	Vector2 position = {
-		float(rand()) / RAND_MAX * (SCREENINFO_WIDTH * 2) - SCREENINFO_WIDTH /2,
-		float(rand()) / RAND_MAX * (SCREENINFO_HEIGHT *2) - SCREENINFO_HEIGHT/2
+		float(rand()) / RAND_MAX * width - width / 2,
+		float(rand()) / RAND_MAX * height - height / 2
 	};
 	Vector2 velocity;
 	velocity.x = float(rand()) / RAND_MAX * 10 - 5.f;
@@ -81,3 +84,19 @@ void BallManager::CreateBalls()
 		balls[i] = new Ball(player_, camera_);
 	}
 }
+
+void BallManager::CheckEatAllBall()
+{
+	for (int i = 0; i < maxBallNum; i++)
+	{
+		if(!balls[i]->IsActive()){ continue; }
+		for (int j = i+1; j < maxBallNum; j++)
+		{
+			if(!balls[i]->IsActive()){ continue; }
+			if(!balls[i]->IsEatOtherBall(balls[j])){ continue; }
+			balls[i]->EatOtherBall(balls[j]);
+			balls[j]->SetActive(false);
+		}
+	}
+}
+

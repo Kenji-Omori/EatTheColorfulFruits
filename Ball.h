@@ -12,14 +12,17 @@ public:
 	Circle ToCircke();
 	void Update();
 	void Draw();
-	bool GetIsActive();
+	bool IsActive();
 	void HitToPlayer();
 	void ReSpawn(Circle circle, Vector2 velocity, Color color, float fliction);
-
+	bool IsEatOtherBall(Ball* other);
+	void EatOtherBall(Ball* other);
+	void SetActive(bool isActive);
 private:
 	void Reflection();
 	void AttractToPlayer();
 	void Fliction();
+
 
 	bool isActive_;
 	Circle circle_;

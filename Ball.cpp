@@ -1,7 +1,8 @@
 #include "Ball.h"
 #include <Novice.h>
 #include <ScreenInfo.h>
-#include <math.h>
+#define _USE_MATH_DEFINES // for C++
+#include <cmath>
 
 Ball::Ball(Player* player, Camera* camera)
 {
@@ -31,7 +32,7 @@ void Ball::Update()
   //Reflection();
   AttractToPlayer();
   Fliction();
-  HitToPlayer();
+  //HitToPlayer();
 }
 
 void Ball::Draw()
@@ -40,7 +41,7 @@ void Ball::Draw()
 //  Novice::DrawEllipse(int(circle_.position_.x), int(circle_.position_.y), int(circle_.radius_), int(circle_.radius_), 0, color_.ToCode(), kFillModeSolid);
 }
 
-bool Ball::GetIsActive()
+bool Ball::IsActive()
 {
   return isActive_;
 }
@@ -60,6 +61,36 @@ void Ball::ReSpawn(Circle circle, Vector2 velocity, Color color, float fliction)
   velocity_ = velocity;
   color_ = color;
   isActive_ = true;
+}
+
+bool Ball::IsEatOtherBall(Ball* other)
+{
+  return circle_.IsInclude(other->circle_);
+}
+
+
+void Ball::EatOtherBall(Ball* other)
+{
+  circle_.radius_ = circle_.CalcMargeSize(other->circle_);
+  HSV myHSV = color_.rgb_.ToHSV();
+  float myH = myHSV.hue;
+  float myHRad = myH * float(M_PI) / 180;
+  Vector2 myHVec = {float(cos(myHRad)), float(sin(myHRad))};
+
+  float otherH = other->color_.rgb_.ToHSV().hue;
+  float otherHRad = otherH * float(M_PI) / 180;
+  Vector2 otherHVec = {float(cos(otherHRad)), float(sin(otherHRad))};
+
+  Vector2 newVec = myHVec + otherHVec;
+  float newRad = atan2f(newVec.y, newVec.x);
+  float newHue = newRad * 180/ float(M_PI);
+  
+  color_.SetColorHSV(newHue, myHSV.saturate, myHSV.value);
+}
+
+void Ball::SetActive(bool isActive)
+{
+  isActive_ = isActive;
 }
 
 void Ball::Reflection()

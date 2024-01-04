@@ -10,11 +10,13 @@ public:
 	~BallManager();
 	void Update();
 	void Draw();
-	void SpawnBall();
-	void SpawnBall(int index);
+	void RespawnBall();
+	void RespawnBall(int index);
 	void CreateBalls();
 private:
-	static const int maxBallNum = 500;
+	void CheckEatAllBall();
+
+	static const int maxBallNum = 10;
 	Ball* balls[maxBallNum];
 	Player* player_;
 	Camera* camera_;

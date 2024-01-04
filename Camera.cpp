@@ -29,7 +29,9 @@ void Camera::DrawCircle(Circle circle, Color color, bool effectIgnore)
     int(circle.position_.y - position_.y - SCREENINFO_HEIGHT/2 + offset.y),
   };
   int radius = int(circle.radius_);
-  Novice::DrawEllipse(pos.x, -pos.y, radius, radius, 0, color.ToCode(), kFillModeSolid);
+  unsigned int code = color.ToCode();
+//  Novice::DrawEllipse(pos.x, -pos.y, radius, radius, 0, color.ToCode(), kFillModeSolid);
+  Novice::DrawEllipse(pos.x, -pos.y, radius, radius, 0, code, kFillModeSolid);
 }
 
 

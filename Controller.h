@@ -45,6 +45,7 @@ private:
 
 	Vector2 mainStick_;
 	Vector2 subStick_;
+	const float STICK_DEAD_ZONE = 0.2f;
 
 	const int maxButtonsNum = 20;
 };

@@ -7,11 +7,11 @@ Player::Player(Controller* controller, Camera* camera)
 {
   position_ = {};
   radius_ = 30;
-  attractRadius_ = 500;
+  attractRadius_ = 150;
   maxAttract_ = 0.3f;
   speed_ = 5;
   color_.SetColorHSV(240,0.5f,0.75f);
-  attractAreaColor_.SetColorHSV(108, 0.2f, 1);
+  attractAreaColor_.SetColorHSV(108, 0.2f, 1, 0.2f);
   controller_ = controller;
   camera_ = camera;
 }
@@ -47,7 +47,9 @@ void Player::Update()
 
 void Player::Draw()
 {
-  camera_->DrawCircle(ToCircle(), color_,true);
+  const bool effectIgnore = true;
+  camera_->DrawCircle(AttractToCircle(), attractAreaColor_, effectIgnore);
+  camera_->DrawCircle(ToCircle(), color_, effectIgnore);
   //Novice::DrawEllipse(int(position_.x), int(position_.y), int(attractRadius_), int(attractRadius_), 0, attractAreaColor_.ToCode(), kFillModeSolid);
   //Novice::DrawEllipse(int(position_.x), int(position_.y), int(radius_), int(radius_), 0, color_.ToCode(), kFillModeSolid);
 }

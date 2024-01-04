@@ -132,6 +132,8 @@ void Controller::UpdateSticks()
   float y = float(-stickY);
   stick.x = x / maxStickTilt;
   stick.y = y / maxStickTilt;
+
+  if(stick.LengthSqr() <= STICK_DEAD_ZONE * STICK_DEAD_ZONE){ stick = {}; }
   mainStick_ =  key + stick;
 
   
@@ -142,12 +144,15 @@ void Controller::UpdateSticks()
   y = float(-stickY);
   stick.x = x / maxStickTilt;
   stick.y = y / maxStickTilt;
+  if(stick.LengthSqr() <= STICK_DEAD_ZONE * STICK_DEAD_ZONE){ stick = {}; }
   subStick_ =  key + stick;
 
   Novice::ScreenPrintf(30,30, "mainStick x%.2f, y%.2f",mainStick_.x, mainStick_.y);
   Novice::ScreenPrintf(30,80, "subStick  x%.2f, y%.2f",subStick_.x, subStick_.y);
 
 }
+
+
 
 bool Controller::IsDownPreKey(KeyCode code)
 {
